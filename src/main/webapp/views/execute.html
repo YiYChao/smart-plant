@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <title></title>
+    <style type="text/css">
+    	.layui-table-page{text-align: center;}
+    </style>
+</head>
+
+<body>
+	<div class="layui-btn-group">
+	    <button type="button" class="layui-btn"><span onclick="setExecution('led/open')">打开LED灯</span></button>
+	    <button type="button" class="layui-btn layui-btn-warm"><span onclick="setExecution('led/auto')">自动</span></button>
+	    <button type="button" class="layui-btn layui-btn-danger"><span onclick="setExecution('led/close')">关闭LED灯</span></button>
+  	</div>
+  	<div class="layui-btn-group">
+	    <button type="button" class="layui-btn"><span onclick="setExecution('fan/open')">打开散热风扇</span></button>
+	    <button type="button" class="layui-btn layui-btn-warm"><span onclick="setExecution('fan/auto')">自动</span></button>
+	    <button type="button" class="layui-btn layui-btn-danger"><span onclick="setExecution('fan/close')">关闭散热风扇</span></button>
+  	</div>
+  	<div class="layui-btn-group">
+	    <button type="button" class="layui-btn"><span onclick="setExecution('pump/open')">开启水泵</span></button>
+	    <button type="button" class="layui-btn layui-btn-warm"><span onclick="setExecution('pump/auto')">自动</span></button>
+	    <button type="button" class="layui-btn layui-btn-danger"><span onclick="setExecution('pump/close')">关闭水泵</span></button>
+  	</div>
+    <table class="layui-hide" id="execute"></table>
+
+	<script src="../plugins/jquery/jquery-3.3.1.min.js"></script>
+    <script src="../layui/layui.all.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script type="text/html" id="statusTpl">
+		{{# if(d.executor.pumpStatus == '1'){ }}
+			工作
+		{{# } else if(d.executor.pumpStatus == '0'){ }}
+			停止
+		{{# } }}
+	</script>
+    <script>
+        layui.use(['table','jquery'], function () {
+            var table = layui.table;
+            table.render({
+                elem: '#execute',
+                url: 'http://localhost:8090/plant/detect/pump.action',
+                limit:5, //每页默认显示的数量
+                limits:[5,10,15,20],
+                defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
+                cols: [[
+                    {field:'pumpId', minWidth:80, title: 'ID',align:'center',templet: '<div>{{d.executor.pumpId}}</div>'}
+                    ,{field:'pumpStatus', minWidth:130, title: '水泵状态',align:'center',templet: '#statusTpl'}
+                    ,{field:'pumpTime', minWidth:180, title: '水泵时间',align:'center',templet:"<div>{{layui.util.toDateString(d.executor.pumpTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                    ,{field:'soilHumidity', minWidth:130, title: '土壤湿度',align:'center', templet: '<div>{{d.sensor.soilHumidity}}</div>'}
+                    ,{field:'sensor.soilTime',title: '土壤时间',align:'center',templet:"<div>{{layui.util.toDateString(d.sensor.soilTime,'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ]],
+                page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
+                    groups: 5, //只显示 1 个连续页码
+                    first: false, //不显示首页
+                    last: false //不显示尾页
+                },
+            });
+        });
+        function setExecution(params){
+        	var target = "http://localhost:8090/plant/std/" + params +".action";
+        	$.ajax({
+                url:target,
+                success:function(data){
+                    alert(data);
+                },
+                error:function(){
+                    alert("出错啦，请刷新页面，重试");
+                },
+            });
+        };
+    </script>
+
+</body>
+
+</html>

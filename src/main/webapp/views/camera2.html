@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="../layui/css/layui.css">
+<link rel="stylesheet" href="../layui/css/view.css" />
+<title></title>
+<style type="text/css">
+.plant-model {
+	padding: 10px;
+}
+
+.img-title {
+	position: relative;
+}
+
+.plant-name {
+	font-size: 16px;
+	color: red;
+}
+
+.plant-time {
+	font-size: 14px;
+	position: absolute;
+	right: 0;
+}
+
+.plant-img {
+	width: 100%;
+}
+</style>
+</head>
+
+<body class="layui-view-body">
+	<div class="layui-container">
+		<div class="layui-row" id="imageList">
+			
+		</div>
+		<div id="demo7"></div>
+	</div>
+	<script id="demo2" type="text/html">
+	 	{{#  layui.each(d, function(index, item){ }}
+			<div class="layui-col-xs12 layui-col-sm6 layui-col-md3 plant-model">
+				<div class="img-title">
+					<span class="plant-name">
+					 {{#  if(item.plantId == 1){ }}
+					 	虎刺梅
+	                 {{#  } else { }}
+					 	其他
+	                 {{#  } }}
+					</span> <span class="plant-time">{{layui.util.toDateString(item.imgDate,'yyyy-MM-dd HH:mm:ss')}}</span>
+				</div>
+				<img src="{{item.imgUrl}}" alt="" class="plant-img">
+			</div>
+		{{#  }); }}
+		{{#  if(d.length === 0){ }}
+        	无数据
+        {{#  } }}
+	</script>
+	<script src="../layui/layui.all.js"></script>
+	<script>
+		layui.use([ 'laypage', 'layer', 'jquery','laytpl'], function() {
+			var laypage = layui.laypage, layer = layui.layer, $ = layui.$,laytpl = layui.laytpl,data={};
+			//完整功能
+			laypage.render({
+				elem : 'demo7',
+				limit : 12,
+				limits : [ 4, 6, 12, 24 ],
+				count : 100,
+				layout : [ 'count', 'prev', 'page', 'next', 'limit', 'refresh','skip' ],
+				plantId : 1,
+				jump : function(obj) {
+					$.ajaxSettings.async = false; // 设置同步请求
+					$.post("http://localhost:8090/plant/image/find.action",obj,function(res){ 
+				          data = res;
+				          var getTpl = demo2.innerHTML,
+				              view = document.getElementById('imageList');
+				          laytpl(getTpl).render(data, function(pic){
+				              view.innerHTML = pic;
+				          });
+					});
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

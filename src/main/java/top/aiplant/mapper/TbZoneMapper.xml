@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.aiplant.dao.TbZoneMapper">
+  <resultMap id="BaseResultMap" type="top.aiplant.entity.TbZone">
+    <result column="zone_id" jdbcType="INTEGER" property="zoneId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="zone_desc" jdbcType="VARCHAR" property="zoneDesc" />
+    <result column="zone_address" jdbcType="VARCHAR" property="zoneAddress" />
+    <result column="zone_time" jdbcType="TIMESTAMP" property="zoneTime" />
+    <result column="zone_status" jdbcType="TINYINT" property="zoneStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    zone_id, user_id, zone_name, zone_desc, zone_address, zone_time, zone_status
+  </sql>
+  <select id="selectByExample" parameterType="top.aiplant.entity.TbZoneExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_zone
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="top.aiplant.entity.TbZoneExample">
+    delete from tb_zone
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="top.aiplant.entity.TbZone">
+    insert into tb_zone (zone_id, user_id, zone_name, 
+      zone_desc, zone_address, zone_time, 
+      zone_status)
+    values (#{zoneId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{zoneName,jdbcType=VARCHAR}, 
+      #{zoneDesc,jdbcType=VARCHAR}, #{zoneAddress,jdbcType=VARCHAR}, #{zoneTime,jdbcType=TIMESTAMP}, 
+      #{zoneStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="top.aiplant.entity.TbZone">
+    insert into tb_zone
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="zoneId != null">
+        zone_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="zoneName != null">
+        zone_name,
+      </if>
+      <if test="zoneDesc != null">
+        zone_desc,
+      </if>
+      <if test="zoneAddress != null">
+        zone_address,
+      </if>
+      <if test="zoneTime != null">
+        zone_time,
+      </if>
+      <if test="zoneStatus != null">
+        zone_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="zoneId != null">
+        #{zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="zoneName != null">
+        #{zoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneDesc != null">
+        #{zoneDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneAddress != null">
+        #{zoneAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneTime != null">
+        #{zoneTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zoneStatus != null">
+        #{zoneStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="top.aiplant.entity.TbZoneExample" resultType="java.lang.Long">
+    select count(*) from tb_zone
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_zone
+    <set>
+      <if test="record.zoneId != null">
+        zone_id = #{record.zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.zoneName != null">
+        zone_name = #{record.zoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneDesc != null">
+        zone_desc = #{record.zoneDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneAddress != null">
+        zone_address = #{record.zoneAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zoneTime != null">
+        zone_time = #{record.zoneTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zoneStatus != null">
+        zone_status = #{record.zoneStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_zone
+    set zone_id = #{record.zoneId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      zone_name = #{record.zoneName,jdbcType=VARCHAR},
+      zone_desc = #{record.zoneDesc,jdbcType=VARCHAR},
+      zone_address = #{record.zoneAddress,jdbcType=VARCHAR},
+      zone_time = #{record.zoneTime,jdbcType=TIMESTAMP},
+      zone_status = #{record.zoneStatus,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.aiplant.dao.TbSoilMapper">
+  <resultMap id="BaseResultMap" type="top.aiplant.entity.TbSoil">
+    <result column="soil_id" jdbcType="INTEGER" property="soilId" />
+    <result column="sensor_id" jdbcType="INTEGER" property="sensorId" />
+    <result column="soil_humidity" jdbcType="INTEGER" property="soilHumidity" />
+    <result column="soil_time" jdbcType="TIMESTAMP" property="soilTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    soil_id, sensor_id, soil_humidity, soil_time
+  </sql>
+  <select id="selectByExample" parameterType="top.aiplant.entity.TbSoilExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_soil
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="top.aiplant.entity.TbSoilExample">
+    delete from tb_soil
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="top.aiplant.entity.TbSoil">
+    insert into tb_soil (soil_id, sensor_id, soil_humidity, 
+      soil_time)
+    values (#{soilId,jdbcType=INTEGER}, #{sensorId,jdbcType=INTEGER}, #{soilHumidity,jdbcType=INTEGER}, 
+      #{soilTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="top.aiplant.entity.TbSoil">
+    insert into tb_soil
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="soilId != null">
+        soil_id,
+      </if>
+      <if test="sensorId != null">
+        sensor_id,
+      </if>
+      <if test="soilHumidity != null">
+        soil_humidity,
+      </if>
+      <if test="soilTime != null">
+        soil_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="soilId != null">
+        #{soilId,jdbcType=INTEGER},
+      </if>
+      <if test="sensorId != null">
+        #{sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="soilHumidity != null">
+        #{soilHumidity,jdbcType=INTEGER},
+      </if>
+      <if test="soilTime != null">
+        #{soilTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="top.aiplant.entity.TbSoilExample" resultType="java.lang.Long">
+    select count(*) from tb_soil
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_soil
+    <set>
+      <if test="record.soilId != null">
+        soil_id = #{record.soilId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sensorId != null">
+        sensor_id = #{record.sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.soilHumidity != null">
+        soil_humidity = #{record.soilHumidity,jdbcType=INTEGER},
+      </if>
+      <if test="record.soilTime != null">
+        soil_time = #{record.soilTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_soil
+    set soil_id = #{record.soilId,jdbcType=INTEGER},
+      sensor_id = #{record.sensorId,jdbcType=INTEGER},
+      soil_humidity = #{record.soilHumidity,jdbcType=INTEGER},
+      soil_time = #{record.soilTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

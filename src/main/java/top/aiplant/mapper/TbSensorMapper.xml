@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.aiplant.dao.TbSensorMapper">
+  <resultMap id="BaseResultMap" type="top.aiplant.entity.TbSensor">
+    <result column="sensor_id" jdbcType="INTEGER" property="sensorId" />
+    <result column="plant_id" jdbcType="INTEGER" property="plantId" />
+    <result column="sensor_name" jdbcType="VARCHAR" property="sensorName" />
+    <result column="sensor__des" jdbcType="VARCHAR" property="sensorDes" />
+    <result column="sensor_time" jdbcType="TIMESTAMP" property="sensorTime" />
+    <result column="sensor_status" jdbcType="TINYINT" property="sensorStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sensor_id, plant_id, sensor_name, sensor__des, sensor_time, sensor_status
+  </sql>
+  <select id="selectByExample" parameterType="top.aiplant.entity.TbSensorExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="top.aiplant.entity.TbSensorExample">
+    delete from tb_sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="top.aiplant.entity.TbSensor">
+    insert into tb_sensor (sensor_id, plant_id, sensor_name, 
+      sensor__des, sensor_time, sensor_status
+      )
+    values (#{sensorId,jdbcType=INTEGER}, #{plantId,jdbcType=INTEGER}, #{sensorName,jdbcType=VARCHAR}, 
+      #{sensorDes,jdbcType=VARCHAR}, #{sensorTime,jdbcType=TIMESTAMP}, #{sensorStatus,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="top.aiplant.entity.TbSensor">
+    insert into tb_sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sensorId != null">
+        sensor_id,
+      </if>
+      <if test="plantId != null">
+        plant_id,
+      </if>
+      <if test="sensorName != null">
+        sensor_name,
+      </if>
+      <if test="sensorDes != null">
+        sensor__des,
+      </if>
+      <if test="sensorTime != null">
+        sensor_time,
+      </if>
+      <if test="sensorStatus != null">
+        sensor_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sensorId != null">
+        #{sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="plantId != null">
+        #{plantId,jdbcType=INTEGER},
+      </if>
+      <if test="sensorName != null">
+        #{sensorName,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorDes != null">
+        #{sensorDes,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorTime != null">
+        #{sensorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sensorStatus != null">
+        #{sensorStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="top.aiplant.entity.TbSensorExample" resultType="java.lang.Long">
+    select count(*) from tb_sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_sensor
+    <set>
+      <if test="record.sensorId != null">
+        sensor_id = #{record.sensorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.plantId != null">
+        plant_id = #{record.plantId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sensorName != null">
+        sensor_name = #{record.sensorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sensorDes != null">
+        sensor__des = #{record.sensorDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sensorTime != null">
+        sensor_time = #{record.sensorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sensorStatus != null">
+        sensor_status = #{record.sensorStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_sensor
+    set sensor_id = #{record.sensorId,jdbcType=INTEGER},
+      plant_id = #{record.plantId,jdbcType=INTEGER},
+      sensor_name = #{record.sensorName,jdbcType=VARCHAR},
+      sensor__des = #{record.sensorDes,jdbcType=VARCHAR},
+      sensor_time = #{record.sensorTime,jdbcType=TIMESTAMP},
+      sensor_status = #{record.sensorStatus,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
