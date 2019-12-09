@@ -1,9 +1,11 @@
 package top.aiplant.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import top.aiplant.dao.TbDhtMapper;
@@ -23,11 +25,19 @@ public class DHT11ServiceImpl implements DHT11Service{
 
 	@Autowired
 	private TbDhtMapper dhtMapper;
+	@SuppressWarnings("rawtypes")
+	@Autowired
+	private RedisTemplate redisTemplate;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void insert2Dht(TbDht dht) {
 		dht.setDhtTime(new Date());
 		dhtMapper.insert(dht);
+		// 加入缓存
+		redisTemplate.boundListOps(dht.getSensorId() + "Date").rightPush(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dht.getDhtTime()));
+		redisTemplate.boundListOps(dht.getSensorId() + "Temperature").rightPush(dht.getDhtTemperature());
+		redisTemplate.boundListOps(dht.getSensorId() + "Humidity").rightPush(dht.getDhtHumidity());
 	}
 
 	@Override

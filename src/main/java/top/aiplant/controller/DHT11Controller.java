@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,9 @@ public class DHT11Controller {
 
 	@Autowired
 	private DHT11Service dht11Service;
+	@SuppressWarnings("rawtypes")
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	@RequestMapping(path = "/dht")
 	@ResponseBody
@@ -44,6 +48,7 @@ public class DHT11Controller {
 		return "SUCCESS";
 	}
 
+	@SuppressWarnings({ "unchecked"})
 	@RequestMapping(path = "/find")
 	@ResponseBody
 	public Echarts findBySensorId() {
@@ -57,8 +62,11 @@ public class DHT11Controller {
 		for (TbDht dht : dhtList) {
 			getDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dht.getDhtTime());
 			category.add(getDate);
+			redisTemplate.boundListOps(1+"Date").rightPush(getDate);
 			temperature.add(dht.getDhtTemperature());
+			redisTemplate.boundListOps(1+"Temperature").rightPush(dht.getDhtTemperature());
 			humidity.add(dht.getDhtHumidity());
+			redisTemplate.boundListOps(1+"Humidity").rightPush(dht.getDhtHumidity());
 		}
 		List<String> legend = new ArrayList<String>(Arrays.asList(new String[] { "温度 ","湿度" }));// 数据分组
 		List<Series> series = new ArrayList<Series>();

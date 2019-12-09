@@ -2,15 +2,12 @@ package top.aiplant.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 import top.aiplant.dao.TbPumpMapper;
 import top.aiplant.dao.TbSensorMapper;
@@ -26,7 +23,7 @@ import top.aiplant.pojo.PageInfo;
 import top.aiplant.service.DetectPumpService;
 /**
  * @ClassName: DetectPumpImpl  
- * @Description: TODO 
+ * @Description:  水泵执行情况监测接口实现
  * @author: YiYChao
  * @date 2019年11月28日 下午10:47:20
  */
@@ -39,6 +36,7 @@ public class DetectPumpServiceImpl implements DetectPumpService{
 	private TbPumpMapper pumpMapper;
 	@Autowired
 	private TbSoilMapper soilMapper;
+	@SuppressWarnings("rawtypes")
 	@Autowired
 	private RedisTemplate redisTemplate;
 	
