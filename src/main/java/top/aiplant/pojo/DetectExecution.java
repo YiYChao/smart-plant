@@ -1,5 +1,7 @@
 package top.aiplant.pojo;
 
+import java.io.Serializable;
+
 /**
  * @ClassName: DetectExecution
  * @Description: 定义一个具有两个泛型参数类
@@ -9,8 +11,9 @@ package top.aiplant.pojo;
  * @param <E> 执行器
  * @param <S> 传感器
  */
-public class DetectExecution<E, S> {
+public class DetectExecution<E, S> implements Serializable{
 
+	private static final long serialVersionUID = -4351946994527902026L;
 	private E executor;
 	private S sensor;
 
@@ -35,9 +38,12 @@ public class DetectExecution<E, S> {
 		this.executor = executor;
 		this.sensor = sensor;
 	}
+	public DetectExecution() {
+		super();
+	}
 
 	@Override
 	public String toString() {
-		return "DetectExecution [executor=" + executor + ", sensor=" + sensor + "]";
+		return executor + "," + sensor;
 	}
 }

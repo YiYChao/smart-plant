@@ -1,9 +1,12 @@
 package top.aiplant.entity;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+public class TbPump implements Serializable{
+	private static final long serialVersionUID = 1103013159169150397L;
 
-public class TbPump {
-    private Integer pumpId;
+	private Integer pumpId;
 
     private Integer sensorId;
 
@@ -45,8 +48,8 @@ public class TbPump {
 
 	@Override
 	public String toString() {
-		return "TbPump [pumpId=" + pumpId + ", sensorId=" + sensorId + ", pumpStatus=" + pumpStatus + ", pumpTime="
-				+ pumpTime + "]";
+		return "{pumpId:" + String.valueOf(pumpId) + ", sensorId:" + String.valueOf(sensorId) + ", pumpStatus:" + String.valueOf(pumpStatus) + ", pumpTime:"
+				+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(pumpTime) + "}";
 	}
     
 }

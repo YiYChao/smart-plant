@@ -1,9 +1,12 @@
 package top.aiplant.entity;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+public class TbSoil implements Serializable{
+	private static final long serialVersionUID = -2014055203551003724L;
 
-public class TbSoil {
-    private Integer soilId;
+	private Integer soilId;
 
     private Integer sensorId;
 
@@ -45,8 +48,8 @@ public class TbSoil {
 
 	@Override
 	public String toString() {
-		return "TbSoil [soilId=" + soilId + ", sensorId=" + sensorId + ", soilHumidity=" + soilHumidity + ", soilTime="
-				+ soilTime + "]";
+		return "{soilId:" + String.valueOf(soilId) + ", sensorId:" + String.valueOf(sensorId) + ", soilHumidity:" + String.valueOf(soilHumidity) + ", soilTime:"
+				+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(soilTime) + "}";
 	}
     
 }

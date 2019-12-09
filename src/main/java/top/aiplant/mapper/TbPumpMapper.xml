@@ -187,7 +187,7 @@
 	<!-- 分页查询，根据传感器Id进行筛选 -->
 	<select id="selectPagerBySensorId" resultType="top.aiplant.entity.TbPump">
 		<bind name="key_offset" value="(page-1)*limit"></bind>
-		SELECT pump_id,pump_status,pump_time FROM tb_pump WHERE sensor_id=#{sensorId} LIMIT #{key_offset},#{limit}
+		SELECT pump_id,sensor_id,pump_status,pump_time FROM tb_pump WHERE sensor_id=#{sensorId} LIMIT #{key_offset},#{limit}
 	</select>
 
 	<select id="selectTotleCount" resultType="java.lang.Integer">
